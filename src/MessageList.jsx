@@ -5,9 +5,15 @@ console.log('Rendering <MessageList/>');
 
 class MessageList extends Component {
   render() {
+    const message = this.props.messages.map(message => {
+      return <Message 
+        key={ message.id }
+        username={ message.username }
+        content={ message.content } />
+    });
     return (
       <main className="messages">
-        <Message />
+        { message }
         <div className="message system">
           Anonymous1 changed their name to nomnom.
         </div>
