@@ -13,18 +13,8 @@ class App extends Component {
     this.socket = null;
     this.state = {
       currentUser: {name: 'Bob'}, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: [
-        {
-          id: 1,
-          username: 'Bob',
-          content: 'Has anyone seen my marbles?',
-        },
-        {
-          id: 2,
-          username: 'Anonymous',
-          content: 'No, I think you lost them. You lost your marbles Bob. You lost them for good.'
-        }
-      ]
+      // messages coming from the server
+      messages: []
     };
 
     this.onNewMessage = this.onNewMessage.bind(this);
@@ -32,6 +22,16 @@ class App extends Component {
   
   componentDidMount() {
     this.socket = new WebSocket('ws://localhost:3001');
+    
+    // this.socket.addEventListener('open', () => {
+    //   this.socket.send('hello');
+    // });
+
+    this.socket.addEventListener('message', (msg) => {
+      console.log(msg.data);
+      this.setState({messages: this.state.messages.concat(JSON.parse(msg.data))});
+      console.log(this.state.messages);
+    });
   }
 
   // get new message from currentUser
@@ -43,8 +43,7 @@ class App extends Component {
       username: this.state.currentUser.name,
       content: content
     };
-    messages.push(newMessage);
-    this.setState(messages);
+    this.socket.send(JSON.stringify(newMessage));
   }
 
   // render the page
