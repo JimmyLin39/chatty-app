@@ -26,6 +26,8 @@ class App extends Component {
 
     this.onNewMessage = this.onNewMessage.bind(this);
   }
+
+  // get new message from currentUser
   onNewMessage(content) {
     const messages = this.state.messages;
     const id = messages[messages.length-1].id + 1;
@@ -38,6 +40,7 @@ class App extends Component {
     this.setState(messages);
   }
 
+  // render the page
   render() {
     return (
       <div>  

@@ -26,7 +26,6 @@ class ChatBar extends Component {
         content: ''
       });
     }
-
   }
 
   render() {
