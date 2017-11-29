@@ -12,12 +12,12 @@ class App extends Component {
       currentUser: {name: 'Bob'}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [
         {
-          id: '1',
+          id: 1,
           username: 'Bob',
           content: 'Has anyone seen my marbles?',
         },
         {
-          id: '2',
+          id: 2,
           username: 'Anonymous',
           content: 'No, I think you lost them. You lost your marbles Bob. You lost them for good.'
         }
@@ -28,9 +28,9 @@ class App extends Component {
   }
   onNewMessage(content) {
     const messages = this.state.messages;
-    const id = Number(messages[messages.length-1].id) + 1;
+    const id = messages[messages.length-1].id + 1;
     const newMessage = {
-      id: id.toString(),
+      id: id,
       username: this.state.currentUser.name,
       content: content
     };
