@@ -21,4 +21,7 @@ class MessageList extends Component {
     );
   }
 }
+// MessageList.propTypes = {
+//   messages: PropTypes.string.isRequired,
+// };
 export default MessageList;
