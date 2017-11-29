@@ -30,16 +30,14 @@ class App extends Component {
     this.socket.addEventListener('message', (msg) => {
       console.log(msg.data);
       this.setState({messages: this.state.messages.concat(JSON.parse(msg.data))});
-      console.log(this.state.messages);
+      console.log('messages', this.state.messages);
     });
   }
 
   // get new message from currentUser
   onNewMessage(content) {
     const messages = this.state.messages;
-    const id = messages[messages.length-1].id + 1;
     const newMessage = {
-      id: id,
       username: this.state.currentUser.name,
       content: content
     };
