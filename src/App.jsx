@@ -2,12 +2,15 @@ import React, {Component} from 'react';
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
 
+// var exampleSocket = new WebSocket('ws://localhost:3001/', 'ws');
+
 console.log('Rendering <App/>');
 
 class App extends Component {
   constructor() {
     super();
 
+    this.socket = null;
     this.state = {
       currentUser: {name: 'Bob'}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [
@@ -25,6 +28,10 @@ class App extends Component {
     };
 
     this.onNewMessage = this.onNewMessage.bind(this);
+  }
+  
+  componentDidMount() {
+    this.socket = new WebSocket('ws://localhost:3001');
   }
 
   // get new message from currentUser
