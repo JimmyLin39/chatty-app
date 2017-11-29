@@ -26,12 +26,18 @@ class App extends Component {
 
     this.onNewMessage = this.onNewMessage.bind(this);
   }
-
   onNewMessage(content) {
+    const messages = this.state.messages;
+    let id = Number(messages[messages.length-1].id) + 1;
     console.log(content);
-
-    // when recevie message
-    // add to message array
+    const newMessage = {
+      id: id.toString(),
+      username: this.state.currentUser.name,
+      content: content
+    };
+    messages.push(newMessage);
+    console.log('new', messages);
+    this.setState(messages);
   }
 
   render() {

@@ -10,7 +10,7 @@ class ChatBar extends Component {
     };
 
     this.onContent = this.onContent.bind(this);
-    // this.onPost = this.onPost.bind(this);
+    this.onPost = this.onPost.bind(this);
   }
   // receice the text in the input field
   onContent(event) {
