@@ -28,15 +28,13 @@ class App extends Component {
   }
   onNewMessage(content) {
     const messages = this.state.messages;
-    let id = Number(messages[messages.length-1].id) + 1;
-    console.log(content);
+    const id = Number(messages[messages.length-1].id) + 1;
     const newMessage = {
       id: id.toString(),
       username: this.state.currentUser.name,
       content: content
     };
     messages.push(newMessage);
-    console.log('new', messages);
     this.setState(messages);
   }
 

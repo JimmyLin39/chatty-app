@@ -22,7 +22,11 @@ class ChatBar extends Component {
   onPost(event) {
     if (event.key === 'Enter') {
       this.props.onNewMessage(this.state.content);
+      this.setState({
+        content: ''
+      });
     }
+
   }
 
   render() {
@@ -37,6 +41,7 @@ class ChatBar extends Component {
           className="chatbar-message" 
           placeholder="Type a message and hit ENTER"
           onChange={ this.onContent }
+          value={this.state.content}
           onKeyDown= { this.onPost }
           />
       </footer>
