@@ -44,6 +44,14 @@ function userOnlineMsg(numberOfClient) {
   wss.broadcast(userOnlineMsg);
 }
 
+wss.broadcast = function broadcast(message) {
+  wss.clients.forEach(function each(client) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(message));
+    }
+  });
+};
+
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
@@ -81,10 +89,3 @@ wss.on('connection', (ws) => {
   });
 });
 
-wss.broadcast = function broadcast(message) {
-  wss.clients.forEach(function each(client) {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(message));
-    }
-  });
-};
