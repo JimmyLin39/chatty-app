@@ -10,23 +10,18 @@ class App extends Component {
   constructor() {
     super();
 
-    this.socket = null;
+    this.socket = new WebSocket('ws://localhost:3001');
     this.state = {
-      currentUser: {name: 'Bob'}, // optional. if currentUser is not defined, it means the user is Anonymous
+      currentUser: {name: 'Anonymous'}, // optional. if currentUser is not defined, it means the user is Anonymous
       // messages coming from the server
       messages: []
     };
 
     this.onNewMessage = this.onNewMessage.bind(this);
+    this.onNewUser = this.onNewUser.bind(this);
   }
   
-  componentDidMount() {
-    this.socket = new WebSocket('ws://localhost:3001');
-    
-    // this.socket.addEventListener('open', () => {
-    //   this.socket.send('hello');
-    // });
-
+  componentWillMount() {
     this.socket.addEventListener('message', (msg) => {
       console.log(msg.data);
       this.setState({messages: this.state.messages.concat(JSON.parse(msg.data))});
@@ -34,13 +29,24 @@ class App extends Component {
     });
   }
 
-  // get new message from currentUser
+  // get current username from ChatBar
+  onNewUser(username) {
+    this.setState({
+      currentUser: {
+        name: username || 'Anonymous'
+      }
+    }); 
+  }
+
+  // get new message from ChatBar
   onNewMessage(content) {
-    const messages = this.state.messages;
+    const { messages, currentUser } = this.state;
+
     const newMessage = {
-      username: this.state.currentUser.name,
+      username: currentUser.name,
       content: content
     };
+
     this.socket.send(JSON.stringify(newMessage));
   }
 
@@ -53,7 +59,7 @@ class App extends Component {
         </nav>
         <MessageList messages={ this.state.messages } />
         <ChatBar 
-          currentUser={ this.state.currentUser }
+          onNewUser={ this.onNewUser }
           onNewMessage={ this.onNewMessage } 
           />
       </div>
