@@ -33,8 +33,7 @@ wss.on('connection', (ws) => {
       case 'postNotification':
         // handle post notification
         console.log('post notifictaion');
-        // postNotification();
-        wss.broadcast(parsedMessage);
+        postNotification(parsedMessage);
         break;
       default:
         // show an error in the console if the message type is unknown
@@ -67,11 +66,8 @@ function postMessage(message) {
   wss.broadcast(message);
 }
 
-// // handle post notification
-// function postNotification() {
-//   const postNotification = {
-//     type: 'postNotification', 
-//     content: 'UserA has changed their name to UserB.'
-//   }
-//   wss.broadcast(postNotification);
-// }
+// handle post notification
+function postNotification(message) {
+  message.type = 'incomingNotification';
+  wss.broadcast(message);
+}
