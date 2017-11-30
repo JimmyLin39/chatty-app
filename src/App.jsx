@@ -21,7 +21,7 @@ class App extends Component {
     this.onNewUser = this.onNewUser.bind(this);
   }
   
-  componentWillMount() {
+  componentDidMount() {
     this.socket.addEventListener('message', (msg) => {
       console.log(msg.data);
       this.setState({messages: this.state.messages.concat(JSON.parse(msg.data))});
@@ -31,6 +31,14 @@ class App extends Component {
 
   // get current username from ChatBar
   onNewUser(username) {
+    console.log('current username', this.state.currentUser.name);
+    console.log('new username', username);
+    const currentUser = this.state.currentUser.name;
+    const postNotification = {
+      type: 'postNotification', 
+      content: `${currentUser}has changed their name to ${username}.`
+    }
+    this.socket.send(JSON.stringify(postNotification));
     this.setState({
       currentUser: {
         name: username || 'Anonymous'
@@ -40,9 +48,10 @@ class App extends Component {
 
   // get new message from ChatBar
   onNewMessage(content) {
-    const { messages, currentUser } = this.state;
-
+    const { currentUser } = this.state;
+    console.log('content:', content);
     const newMessage = {
+      'type': 'postMessage',
       username: currentUser.name,
       content: content
     };

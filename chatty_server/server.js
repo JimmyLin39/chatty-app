@@ -24,16 +24,24 @@ wss.on('connection', (ws) => {
   // receive message from client
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
-    // create a unique timestamp uuid
-    const id = uuidv1();
+    const parsedMessage = JSON.parse(message);
+    switch(parsedMessage.type) {
+      case 'postMessage':
+        // handle post message
+        postMessage(parsedMessage);
+        break;
+      case 'postNotification':
+        // handle post notification
+        console.log('post notifictaion');
+        // postNotification();
+        wss.broadcast(parsedMessage);
+        break;
+      default:
+        // show an error in the console if the message type is unknown
+        throw new Error('Unknown event type ' + parsedMessage.type);
+    }
 
-    // add id to message
-    const messageWithId = JSON.parse(message);
-    messageWithId['id']= id;
-
-    // broadcast message to all clients
-    console.log('broadcast data', messageWithId);
-    wss.broadcast(messageWithId);
+    
   });
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => console.log('Client disconnected'));
@@ -47,3 +55,23 @@ wss.broadcast = function broadcast(message) {
   });
 };
 
+// handle post message
+function postMessage(message) {
+  // create a unique timestamp uuid
+  const id = uuidv1();
+  // add id and type to message
+  message['id']= id;
+  message['type']= 'incomingMessage';
+  // broadcast message to all clients
+  console.log('broadcast data', message);
+  wss.broadcast(message);
+}
+
+// // handle post notification
+// function postNotification() {
+//   const postNotification = {
+//     type: 'postNotification', 
+//     content: 'UserA has changed their name to UserB.'
+//   }
+//   wss.broadcast(postNotification);
+// }
