@@ -15,12 +15,16 @@ const server = express()
 
 // Create the WebSockets server
 const wss = new WebSocket.Server({ server });
-
+let numberOfClient = 0;
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
+  numberOfClient += 1;
+  console.log('numberOfClient:', numberOfClient);
+  userOnlineMsg(numberOfClient);
+
   // receive message from client
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
@@ -39,11 +43,14 @@ wss.on('connection', (ws) => {
         // show an error in the console if the message type is unknown
         throw new Error('Unknown event type ' + parsedMessage.type);
     }
-
-    
   });
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+    console.log('Client disconnected');
+    numberOfClient -= 1;
+    console.log('numberOfClient:', numberOfClient);
+    userOnlineMsg(numberOfClient);
+  });
 });
 
 wss.broadcast = function broadcast(message) {
@@ -70,4 +77,13 @@ function postMessage(message) {
 function postNotification(message) {
   message.type = 'incomingNotification';
   wss.broadcast(message);
+}
+
+// send back a message when a user connect or disconnect
+function userOnlineMsg(numberOfClient) {
+  const userOnlineMsg = {
+    type: 'incomingUserOnlineMsg',
+    connect: `${numberOfClient} users online`
+  }
+  wss.broadcast(userOnlineMsg);
 }
