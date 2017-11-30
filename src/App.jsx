@@ -25,6 +25,7 @@ class App extends Component {
   }
   
   componentDidMount() {
+    console.log("componentDidMount <App />");
     // listening to incoming message from server
     this.socket.addEventListener('message', (msg) => {
       console.log(msg.data);
@@ -32,9 +33,7 @@ class App extends Component {
       switch(parsedMsg.type) {
         case 'incomingUserOnlineMsg':
           // handle incoming user online message
-          console.log(parsedMsg.content);
           this.setState({userOnlineMessage: parsedMsg.content});
-          console.log(this.state.userOnlineMessage);
           break;
         case 'incomingMessage':
           // handle incoming message
@@ -76,7 +75,7 @@ class App extends Component {
     const { currentUser } = this.state;
     console.log('content:', content);
     const newMessage = {
-      'type': 'postMessage',
+      type: 'postMessage',
       username: currentUser.name,
       content: content
     };
@@ -90,13 +89,14 @@ class App extends Component {
       <div>  
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
-            <div className="navbar-user-onilne">
+            <div className="navbar-brand navbar-user-onilne">
               { this.state.userOnlineMessage }
             </div>
         </nav>
         <MessageList 
           messages={ this.state.messages } 
-          notification={ this.state.notification }/>
+          notification={ this.state.notification }
+          />
         <ChatBar 
           onNewUser={ this.onNewUser }
           onNewMessage={ this.onNewMessage } 
