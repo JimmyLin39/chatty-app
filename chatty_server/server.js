@@ -16,6 +16,34 @@ const server = express()
 // Create the WebSockets server
 const wss = new WebSocket.Server({ server });
 let numberOfClient = 0;
+
+// handle post message
+function postMessage(message) {
+  // create a unique timestamp uuid
+  const id = uuidv1();
+  // add id and type to message
+  message['id']= id;
+  message['type']= 'incomingMessage';
+  // broadcast message to all clients
+  console.log('broadcast data', message);
+  wss.broadcast(message);
+}
+
+// handle post notification
+function postNotification(message) {
+  message.type = 'incomingNotification';
+  wss.broadcast(message);
+}
+
+// send back a message when a user connect or disconnect
+function userOnlineMsg(numberOfClient) {
+  const userOnlineMsg = {
+    type: 'incomingUserOnlineMsg',
+    content: `${numberOfClient} users online`
+  }
+  wss.broadcast(userOnlineMsg);
+}
+
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
@@ -60,30 +88,3 @@ wss.broadcast = function broadcast(message) {
     }
   });
 };
-
-// handle post message
-function postMessage(message) {
-  // create a unique timestamp uuid
-  const id = uuidv1();
-  // add id and type to message
-  message['id']= id;
-  message['type']= 'incomingMessage';
-  // broadcast message to all clients
-  console.log('broadcast data', message);
-  wss.broadcast(message);
-}
-
-// handle post notification
-function postNotification(message) {
-  message.type = 'incomingNotification';
-  wss.broadcast(message);
-}
-
-// send back a message when a user connect or disconnect
-function userOnlineMsg(numberOfClient) {
-  const userOnlineMsg = {
-    type: 'incomingUserOnlineMsg',
-    content: `${numberOfClient} users online`
-  }
-  wss.broadcast(userOnlineMsg);
-}
