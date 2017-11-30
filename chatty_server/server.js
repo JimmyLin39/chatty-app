@@ -83,7 +83,7 @@ function postNotification(message) {
 function userOnlineMsg(numberOfClient) {
   const userOnlineMsg = {
     type: 'incomingUserOnlineMsg',
-    connect: `${numberOfClient} users online`
+    content: `${numberOfClient} users online`
   }
   wss.broadcast(userOnlineMsg);
 }

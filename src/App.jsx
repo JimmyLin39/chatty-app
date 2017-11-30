@@ -16,7 +16,8 @@ class App extends Component {
       currentUser: {name: 'Anonymous'}, 
       // messages coming from the server
       messages: [],
-      notification: ''
+      notification: '',
+      userOnlineMessage: ''
     };
 
     this.onNewMessage = this.onNewMessage.bind(this);
@@ -29,6 +30,12 @@ class App extends Component {
       console.log(msg.data);
       const parsedMsg = JSON.parse(msg.data);
       switch(parsedMsg.type) {
+        case 'incomingUserOnlineMsg':
+          // handle incoming user online message
+          console.log(parsedMsg.content);
+          this.setState({userOnlineMessage: parsedMsg.content});
+          console.log(this.state.userOnlineMessage);
+          break;
         case 'incomingMessage':
           // handle incoming message
           this.setState({messages: this.state.messages.concat(parsedMsg)});          
@@ -83,6 +90,9 @@ class App extends Component {
       <div>  
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
+            <div className="navbar-user-onilne">
+              { this.state.userOnlineMessage }
+            </div>
         </nav>
         <MessageList 
           messages={ this.state.messages } 
