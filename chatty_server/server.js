@@ -33,14 +33,17 @@ wss.on('connection', (ws) => {
 
     // broadcast message to all clients
     console.log('broadcast data', messageWithId);
-    wss.clients.forEach(function each(client) {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify(messageWithId));
-      }
-    });
-    
+    wss.broadcast(messageWithId);
   });
-
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => console.log('Client disconnected'));
 });
+
+wss.broadcast = function broadcast(message) {
+  wss.clients.forEach(function each(client) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(message));
+    }
+  });
+};
+
