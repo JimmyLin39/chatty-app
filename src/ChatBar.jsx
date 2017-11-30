@@ -3,14 +3,17 @@ import React, { Component } from 'react';
 console.log('Rendering <ChatBar/>');
 
 class ChatBar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      content: ''
+      content: '',
+      username: ''
     };
 
     this.onContent = this.onContent.bind(this);
     this.onPost = this.onPost.bind(this);
+    this.onUsername = this.onUsername.bind(this);
+    this.onNewUsername = this.onNewUsername.bind(this);
   }
   // receice the text in the input field
   onContent(event) {
@@ -18,7 +21,14 @@ class ChatBar extends Component {
       content: event.target.value
     });
   }
-  // if user press enter, passing it up to App
+
+  onUsername(event) {
+    this.setState({
+      username: event.target.value
+    });
+  }
+
+  // if user press enter, passing new content up to App
   onPost(event) {
     if (event.key === 'Enter') {
       this.props.onNewMessage(this.state.content);
@@ -27,15 +37,21 @@ class ChatBar extends Component {
       });
     }
   }
+  // if user leave input field, passing new username up to App
+  onNewUsername(event) {
+    const username = this.state.username;
+    this.props.onNewUser(username);
+  }
 
   render() {
-    const currentUser = this.props.currentUser.name;     
     return (
       <footer className="chatbar">
         <input 
           className="chatbar-username" 
           placeholder="Your Name (Optional)" 
-          defaultValue={ currentUser } />
+          onChange={ this.onUsername }
+          value={this.state.username}
+          onBlur= { this.onNewUsername } />
         <input 
           className="chatbar-message" 
           placeholder="Type a message and hit ENTER"
