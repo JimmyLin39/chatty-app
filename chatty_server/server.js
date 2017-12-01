@@ -24,7 +24,6 @@ function postMessage(message) {
   message['id']= id;
   message['type']= 'incomingMessage';
   // broadcast message to all clients
-  console.log('broadcast data', message);
   wss.broadcast(message);
 }
 
@@ -60,7 +59,6 @@ wss.on('connection', (ws) => {
 
   // receive message from client
   ws.on('message', function incoming(message) {
-    console.log('received: %s', message);
     const parsedMessage = JSON.parse(message);
     switch(parsedMessage.type) {
       case 'postMessage':
@@ -69,7 +67,6 @@ wss.on('connection', (ws) => {
         break;
       case 'postNotification':
         // handle post notification
-        console.log('post notifictaion');
         postNotification(parsedMessage);
         break;
       default:

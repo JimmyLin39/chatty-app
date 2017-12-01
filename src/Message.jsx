@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-console.log('Rendering <Message/>');
-
 class Message extends Component {
   render() {
     return (

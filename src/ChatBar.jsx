@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-console.log('Rendering <ChatBar/>');
-
 class ChatBar extends Component {
   constructor(props) {
     super(props);
@@ -21,13 +19,12 @@ class ChatBar extends Component {
       content: event.target.value
     });
   }
-
+  // receice the username in the input field
   onUsername(event) {
     this.setState({
       username: event.target.value
     });
   }
-
   // if user press enter, passing new content up to App
   onPost(event) {
     if (event.key === 'Enter') {
@@ -38,7 +35,7 @@ class ChatBar extends Component {
     }
   }
   // if user leave input field, passing new username up to App
-  onNewUsername(event) {
+  onNewUsername() {
     const username = this.state.username;
     this.props.onNewUser(username);
   }
@@ -51,7 +48,8 @@ class ChatBar extends Component {
           placeholder="Your Name (Optional)" 
           onChange={ this.onUsername }
           value={this.state.username}
-          onBlur= { this.onNewUsername } />
+          onBlur= { this.onNewUsername } 
+          />
         <input 
           className="chatbar-message" 
           placeholder="Type a message and hit ENTER"

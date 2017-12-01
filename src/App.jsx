@@ -2,10 +2,6 @@ import React, {Component} from 'react';
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
 
-// var exampleSocket = new WebSocket('ws://localhost:3001/', 'ws');
-
-console.log('Rendering <App/>');
-
 class App extends Component {
   constructor() {
     super();
@@ -25,10 +21,8 @@ class App extends Component {
   }
   
   componentDidMount() {
-    console.log("componentDidMount <App />");
     // listening to incoming message from server
     this.socket.addEventListener('message', (msg) => {
-      console.log(msg.data);
       const parsedMsg = JSON.parse(msg.data);
       switch(parsedMsg.type) {
         case 'incomingclientsCountMsg':
@@ -41,22 +35,17 @@ class App extends Component {
           break;
         case 'incomingNotification':
           // handle incoming notification
-          console.log(parsedMsg.content);
           this.setState({notification: parsedMsg.content});
           break;
         default:
           // show an error in the console if the message type is unknown
           throw new Error('Unknown event type ' + parsedMsg.type);
       }
-
-      console.log('messages', this.state.messages);
     });
   }
 
   // get current username from ChatBar
   onNewUser(username) {
-    console.log('current username', this.state.currentUser.name);
-    console.log('new username', username);
     const currentUser = this.state.currentUser.name;
     const postNotification = {
       type: 'postNotification', 
@@ -73,13 +62,11 @@ class App extends Component {
   // get new message from ChatBar
   onNewMessage(content) {
     const { currentUser } = this.state;
-    console.log('content:', content);
     const newMessage = {
       type: 'postMessage',
       username: currentUser.name,
       content: content
     };
-
     this.socket.send(JSON.stringify(newMessage));
   }
 
