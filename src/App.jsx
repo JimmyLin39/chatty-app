@@ -17,7 +17,7 @@ class App extends Component {
       // messages coming from the server
       messages: [],
       notification: '',
-      userOnlineMessage: ''
+      clientsCountMsg: ''
     };
 
     this.onNewMessage = this.onNewMessage.bind(this);
@@ -31,9 +31,9 @@ class App extends Component {
       console.log(msg.data);
       const parsedMsg = JSON.parse(msg.data);
       switch(parsedMsg.type) {
-        case 'incomingUserOnlineMsg':
+        case 'incomingclientsCountMsg':
           // handle incoming user online message
-          this.setState({userOnlineMessage: parsedMsg.content});
+          this.setState({clientsCountMsg: parsedMsg.content});
           break;
         case 'incomingMessage':
           // handle incoming message
@@ -90,7 +90,7 @@ class App extends Component {
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
             <div className="navbar-brand navbar-user-onilne">
-              { this.state.userOnlineMessage }
+              { this.state.clientsCountMsg }
             </div>
         </nav>
         <MessageList 

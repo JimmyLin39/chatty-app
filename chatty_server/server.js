@@ -15,7 +15,6 @@ const server = express()
 
 // Create the WebSockets server
 const wss = new WebSocket.Server({ server });
-let numberOfClient = 0;
 
 // handle post message
 function postMessage(message) {
@@ -36,12 +35,12 @@ function postNotification(message) {
 }
 
 // send back a message when a user connect or disconnect
-function userOnlineMsg(numberOfClient) {
-  const userOnlineMsg = {
-    type: 'incomingUserOnlineMsg',
-    content: `${numberOfClient} users online`
+function clientsCountMsg() {
+  const clientsCountMsg = {
+    type: 'incomingclientsCountMsg',
+    content: `${wss.clients.size} users online`
   }
-  wss.broadcast(userOnlineMsg);
+  wss.broadcast(clientsCountMsg);
 }
 
 wss.broadcast = function broadcast(message) {
@@ -57,9 +56,7 @@ wss.broadcast = function broadcast(message) {
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
-  numberOfClient += 1;
-  console.log('numberOfClient:', numberOfClient);
-  userOnlineMsg(numberOfClient);
+  clientsCountMsg();
 
   // receive message from client
   ws.on('message', function incoming(message) {
@@ -83,9 +80,7 @@ wss.on('connection', (ws) => {
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {
     console.log('Client disconnected');
-    numberOfClient -= 1;
-    console.log('numberOfClient:', numberOfClient);
-    userOnlineMsg(numberOfClient);
+    clientsCountMsg();
   });
 });
 
