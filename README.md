@@ -19,7 +19,7 @@ open http://localhost:3000
 npm install
 npm start
 ```
-The WebSocket server set up at http://localhost:3001
+The WebSocket server start at http://localhost:3001
 
 ## Dependencies
 
