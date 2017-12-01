@@ -8,6 +8,7 @@ class MessageList extends Component {
         key={ message.id }
         username={ message.username }
         content={ message.content }
+        usernameColor= { this.props.usernameColor}
         />
     });
     return (

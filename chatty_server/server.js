@@ -50,12 +50,21 @@ wss.broadcast = function broadcast(message) {
   });
 };
 
+function assignColor() {
+  const assignColorMsg = {
+    type: 'incomingAssignColorMsg',
+    content: 'blue'
+  }
+  wss.broadcast(assignColorMsg);
+}
+
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
   clientsCountMsg();
+  assignColor();
 
   // receive message from client
   ws.on('message', function incoming(message) {

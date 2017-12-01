@@ -13,7 +13,8 @@ class App extends Component {
       // messages coming from the server
       messages: [],
       notification: '',
-      clientsCountMsg: ''
+      clientsCountMsg: '',
+      usernameColor: {color: ''}
     };
 
     this.onNewMessage = this.onNewMessage.bind(this);
@@ -28,6 +29,13 @@ class App extends Component {
         case 'incomingclientsCountMsg':
           // handle incoming user online message
           this.setState({clientsCountMsg: parsedMsg.content});
+          break;
+        case 'incomingAssignColorMsg':
+          // handle incoming assign user color message
+          this.setState({
+            usernameColor: { color: parsedMsg.content }
+          });
+          console.log(this.state.usernameColor);
           break;
         case 'incomingMessage':
           // handle incoming message
@@ -83,6 +91,7 @@ class App extends Component {
         <MessageList 
           messages={ this.state.messages } 
           notification={ this.state.notification }
+          usernameColor={ this.state.usernameColor }
           />
         <ChatBar 
           onNewUser={ this.onNewUser }
