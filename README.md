@@ -3,7 +3,7 @@ Chatty App
 
 Chatty App allow users to communicate with each other without having to register accounts. It use React, a popular front-end library created and used heavily by Facebook as well as modern tools for Node including Webpack and Babel.
 
-### Usage
+## Usage
 
 1. Install the dependencies and start the server 
     In `./chatty-app/`
@@ -21,9 +21,14 @@ npm start
 ```
 The WebSocket server set up at http://localhost:3001
 
-### Dependencies
+## Dependencies
 
 * React
 * Webpack
 * [babel-loader](https://github.com/babel/babel-loader)
 * [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+
+## Screenshots
+
+!["Screenshot of chatty messages"](https://github.com/JimmyLin39/chatty-app/blob/master/docs/Screen-Shot-1.png?raw=true)
+!["Screenshot of chatty messages"](https://github.com/JimmyLin39/chatty-app/blob/master/docs/Screen-Shot-2.png?raw=true)
