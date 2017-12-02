@@ -51,11 +51,18 @@ wss.broadcast = function broadcast(message) {
 };
 
 function assignColor() {
-  const assignColorMsg = {
-    type: 'incomingAssignColorMsg',
-    content: 'blue'
+  const numberOfClient = wss.clients.size;
+  let color = '';
+  if (numberOfClient % 2 === 1) {
+    color = 'DarkOrchid'
+  } else if (numberOfClient % 2 === 0) {
+    color = 'DeepSkyBlue'
   }
-  wss.broadcast(assignColorMsg);
+
+  return  {
+    type: 'incomingAssignColorMsg',
+    content: {color: color }
+  }
 }
 
 // Set up a callback that will run when a client connects to the server
@@ -64,7 +71,7 @@ function assignColor() {
 wss.on('connection', (ws) => {
   console.log('Client connected');
   clientsCountMsg();
-  assignColor();
+  ws.send(JSON.stringify(assignColor()));
 
   // receive message from client
   ws.on('message', function incoming(message) {

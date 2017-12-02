@@ -14,7 +14,7 @@ class App extends Component {
       messages: [],
       notification: '',
       clientsCountMsg: '',
-      usernameColor: {color: ''}
+      usernameColor: ''
     };
 
     this.onNewMessage = this.onNewMessage.bind(this);
@@ -32,9 +32,7 @@ class App extends Component {
           break;
         case 'incomingAssignColorMsg':
           // handle incoming assign user color message
-          this.setState({
-            usernameColor: { color: parsedMsg.content }
-          });
+          this.setState({usernameColor: parsedMsg.content});
           console.log(this.state.usernameColor);
           break;
         case 'incomingMessage':
@@ -62,7 +60,7 @@ class App extends Component {
     this.socket.send(JSON.stringify(postNotification));
     this.setState({
       currentUser: {
-        name: username || 'Anonymous'
+        name: username || 'Anonymous',
       }
     }); 
   }
@@ -91,7 +89,7 @@ class App extends Component {
         <MessageList 
           messages={ this.state.messages } 
           notification={ this.state.notification }
-          usernameColor={ this.state.usernameColor }
+          usernameColor={ this.state.usernameColor}
           />
         <ChatBar 
           onNewUser={ this.onNewUser }
